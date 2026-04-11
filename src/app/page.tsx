@@ -2,6 +2,7 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import EmailCampaigns from '@/app/email/EmailCampaigns'
 
 const T={bg:'#07080C',s1:'#0D0F16',s2:'#121520',s3:'#181C28',border:'#232840',accent:'#3D7EFF',accentG:'rgba(61,126,255,0.15)',cyan:'#00C8C0',green:'#18CF7A',orange:'#FF7A35',red:'#FF3559',purple:'#9B72FF',text:'#D8E0F0',muted:'#5E6A88',faint:'#252D45',meta:'#1877F2',google:'#4285F4',wa:'#25D366'}
 const NAV:any[]=[{g:'INICIO',items:[{id:'dashboard',label:'Dashboard',icon:'▣'}]},{g:'CONTACTOS',items:[{id:'contactos',label:'Contactos',icon:'◉'},{id:'empresas',label:'Empresas',icon:'⬡'},{id:'actividades',label:'Actividades',icon:'◈'}]},{g:'VENTAS',items:[{id:'pipeline',label:'Oportunidades',icon:'⇢'},{id:'propuestas',label:'Propuestas IA',icon:'◧',badge:'IA',badgeC:'#9B72FF'},{id:'facturas',label:'Facturas',icon:'◪'}]},{g:'COMUNICACIÓN',items:[{id:'inbox',label:'WhatsApp',icon:'◎',badgeC:'#18CF7A'},{id:'email',label:'Email',icon:'◈'}]},{g:'CAPTACIÓN',items:[{id:'meta',label:'Meta Ads',icon:'f'},{id:'google',label:'Google Ads',icon:'G'},{id:'social',label:'Social',icon:'◓'}]},{g:'ANÁLISIS',items:[{id:'reportes',label:'Reportes',icon:'◻'},{id:'automatizaciones',label:'Automatizaciones',icon:'⚡'}]}]
@@ -332,6 +333,8 @@ export default function CRM(){
               </>:<div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',color:T.muted,fontSize:13}}>Selecciona una conversación</div>}
             </div>
           </div>}
+
+          {nav==='email'&&<EmailCampaigns wsId={ws?.id||''} contacts={contacts}/> }
 
           {nav==='meta'&&<Card style={{padding:36,textAlign:'center',maxWidth:500,margin:'0 auto'}}><div style={{fontSize:48,marginBottom:16}}>f</div><div style={{fontWeight:800,fontSize:20,marginBottom:8,color:'#1877F2'}}>Meta Ads</div><div style={{color:T.muted,fontSize:14,marginBottom:24,lineHeight:1.6}}>Los webhooks ya están configurados. Conecta tu cuenta de Meta Business para recibir leads automáticamente en Supabase.</div><button style={{border:'none',borderRadius:9,padding:'12px 28px',background:'#1877F2',color:'#fff',fontSize:14,fontWeight:600,cursor:'pointer'}}>Conectar Meta Business →</button></Card>}
 
