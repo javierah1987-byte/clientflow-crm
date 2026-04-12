@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
+import dynamic from 'next/dynamic'
+const ProposalModule = dynamic(()=>import('@/components/ProposalModule'),{ssr:false,loading:()=><div style={{color:"#5E6A88",padding:40,textAlign:"center"}}>⏳ Cargando propuestas...</div>})
+const InvoiceModule = dynamic(()=>import('@/components/InvoiceModule'),{ssr:false,loading:()=><div style={{color:"#5E6A88",padding:40,textAlign:"center"}}>⏳ Cargando facturas...</div>})
 import { useState, useRef, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import EmailCampaigns from '@/app/email/EmailCampaigns'
@@ -555,6 +558,8 @@ export default function CRM(){
 
           {nav==='email'&&<EmailCampaigns wsId={ws?.id||''} contacts={contacts}/> }
 
+          {nav==='propuestas'&&ws&&<ProposalModule wsId={ws.id} contacts={contacts}/>}
+          {nav==='facturas'&&ws&&<InvoiceModule wsId={ws.id} contacts={contacts}/>}
           {nav==='propuestas'&&ws&&<ProposalModule wsId={ws.id} contacts={contacts}/>}
           {nav==='facturas'&&ws&&<InvoiceModule wsId={ws.id} contacts={contacts}/>}
           {nav==='meta'&&<Card style={{padding:36,textAlign:'center',maxWidth:500,margin:'0 auto'}}><div style={{fontSize:48,marginBottom:16}}>f</div><div style={{fontWeight:800,fontSize:20,marginBottom:8,color:'#1877F2'}}>Meta Ads</div><div style={{color:T.muted,fontSize:14,marginBottom:24,lineHeight:1.6}}>Los webhooks ya están configurados. Conecta tu cuenta de Meta Business para recibir leads automáticamente en Supabase.</div><button style={{border:'none',borderRadius:9,padding:'12px 28px',background:'#1877F2',color:'#fff',fontSize:14,fontWeight:600,cursor:'pointer'}}>Conectar Meta Business →</button></Card>}
