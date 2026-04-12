@@ -4,12 +4,15 @@
 import { useState, useRef, useEffect } from 'react'
 import ProposalModule from '@/components/ProposalModule'
 import AutomationsModule from '@/components/AutomationsModule'
+import TeamModule from '@/components/TeamModule'
+import BillingModule from '@/components/BillingModule'
+import WhatsAppConfig from '@/components/WhatsAppConfig'
 import InvoiceModule from '@/components/InvoiceModule'
 import { createClient } from '@/lib/supabase/client'
 import EmailCampaigns from '@/app/email/EmailCampaigns'
 
 const T={bg:'#07080C',s1:'#0D0F16',s2:'#121520',s3:'#181C28',border:'#232840',accent:'#3D7EFF',accentG:'rgba(61,126,255,0.15)',cyan:'#00C8C0',green:'#18CF7A',orange:'#FF7A35',red:'#FF3559',purple:'#9B72FF',text:'#D8E0F0',muted:'#5E6A88',faint:'#252D45',meta:'#1877F2',google:'#4285F4',wa:'#25D366'}
-const NAV:any[]=[{g:'INICIO',items:[{id:'dashboard',label:'Dashboard',icon:'▣'}]},{g:'CONTACTOS',items:[{id:'contactos',label:'Contactos',icon:'◉'},{id:'empresas',label:'Empresas',icon:'⬡'},{id:'actividades',label:'Actividades',icon:'◈'}]},{g:'VENTAS',items:[{id:'pipeline',label:'Oportunidades',icon:'⇢'},{id:'propuestas',label:'Propuestas IA',icon:'◧',badge:'IA',badgeC:'#9B72FF'},{id:'facturas',label:'Facturas',icon:'◪'}]},{g:'COMUNICACIÓN',items:[{id:'inbox',label:'WhatsApp',icon:'◎',badgeC:'#18CF7A'},{id:'email',label:'Email',icon:'◈'}]},{g:'CAPTACIÓN',items:[{id:'meta',label:'Meta Ads',icon:'f'},{id:'google',label:'Google Ads',icon:'G'},{id:'social',label:'Social',icon:'◓'}]},{g:'ANÁLISIS',items:[{id:'reportes',label:'Reportes',icon:'◻'},{id:'automatizaciones',label:'Automatizaciones',icon:'⚡'}]}]
+const NAV:any[]=[{g:'INICIO',items:[{id:'dashboard',label:'Dashboard',icon:'▣'}]},{g:'CONTACTOS',items:[{id:'contactos',label:'Contactos',icon:'◉'},{id:'empresas',label:'Empresas',icon:'⬡'},{id:'actividades',label:'WhatsApp Config',icon:'◈'}]},{g:'VENTAS',items:[{id:'pipeline',label:'Oportunidades',icon:'⇢'},{id:'propuestas',label:'Propuestas IA',icon:'◧',badge:'IA',badgeC:'#9B72FF'},{id:'facturas',label:'Facturas',icon:'◪'}]},{g:'COMUNICACIÓN',items:[{id:'inbox',label:'WhatsApp',icon:'◎',badgeC:'#18CF7A'},{id:'email',label:'Email',icon:'◈'}]},{g:'CAPTACIÓN',items:[{id:'meta',label:'Meta Ads',icon:'f'},{id:'google',label:'Google Ads',icon:'G'},{id:'social',label:'Equipo',icon:'◓'}]},{g:'ANÁLISIS',items:[{id:'reportes',label:'Reportes',icon:'◻'},{id:'automatizaciones',label:'Automatizaciones',icon:'⚡'}]}]
 const sC:Record<string,string>={client:'#18CF7A',lead:'#3D7EFF',prospect:'#FF7A35',inactive:'#5E6A88'}
 const sL:Record<string,string>={client:'Cliente',lead:'Lead',prospect:'Prospecto',inactive:'Inactivo'}
 
@@ -355,6 +358,9 @@ export default function CRM(){
           {nav==='email'&&<EmailCampaigns wsId={ws?.id||''} contacts={contacts}/> }
 
           {nav==='automatizaciones'&&ws&&<AutomationsModule wsId={ws.id}/>}
+          {nav==='social'&&ws&&user&&<TeamModule wsId={ws.id} userId={user.id}/>}
+          {nav==='empresas'&&ws&&user&&<BillingModule wsId={ws.id} userId={user.id}/>}
+          {nav==='actividades'&&ws&&<WhatsAppConfig wsId={ws.id}/>}
           {nav==='propuestas'&&ws&&<ProposalModule wsId={ws.id} contacts={contacts}/>}
           {nav==='facturas'&&ws&&<InvoiceModule wsId={ws.id} contacts={contacts}/>}
           {nav==='propuestas'&&ws&&<ProposalModule wsId={ws.id} contacts={contacts}/>}
