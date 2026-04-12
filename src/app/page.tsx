@@ -3,6 +3,7 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
 import ProposalModule from '@/components/ProposalModule'
+import AutomationsModule from '@/components/AutomationsModule'
 import InvoiceModule from '@/components/InvoiceModule'
 import { createClient } from '@/lib/supabase/client'
 import EmailCampaigns from '@/app/email/EmailCampaigns'
@@ -353,6 +354,7 @@ export default function CRM(){
 
           {nav==='email'&&<EmailCampaigns wsId={ws?.id||''} contacts={contacts}/> }
 
+          {nav==='automatizaciones'&&ws&&<AutomationsModule wsId={ws.id}/>}
           {nav==='propuestas'&&ws&&<ProposalModule wsId={ws.id} contacts={contacts}/>}
           {nav==='facturas'&&ws&&<InvoiceModule wsId={ws.id} contacts={contacts}/>}
           {nav==='propuestas'&&ws&&<ProposalModule wsId={ws.id} contacts={contacts}/>}
@@ -371,7 +373,7 @@ export default function CRM(){
 
           {nav==='propuestas'&&<ProposalModule wsId={ws?.id||''} contacts={contacts}/>}
           {nav==='facturas'&&<InvoiceModule wsId={ws?.id||''} contacts={contacts}/>}
-          {!['dashboard','contactos','pipeline','inbox','meta','google','reportes','email','propuestas','facturas'].includes(nav)&&<div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:400,gap:16}}><div style={{fontSize:48}}>🚧</div><div style={{fontWeight:800,fontSize:22}}>{curLabel}</div><div style={{color:T.muted,fontSize:14}}>Próximamente · API en construcción</div></div>}
+          {!['dashboard','contactos','pipeline','inbox','meta','google','reportes','email','propuestas','facturas','automatizaciones','social','empresas','actividades'].includes(nav)&&<div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:400,gap:16}}><div style={{fontSize:48}}>🚧</div><div style={{fontWeight:800,fontSize:22}}>{curLabel}</div><div style={{color:T.muted,fontSize:14}}>Próximamente · API en construcción</div></div>}
 
         </div>
       </div>
