@@ -4,6 +4,8 @@
 import { useState, useRef, useEffect } from 'react'
 import ProposalModule from '@/components/ProposalModule'
 import AutomationsModule from '@/components/AutomationsModule'
+import ReportsModule from '@/components/ReportsModule'
+import OnboardingWizard from '@/components/OnboardingWizard'
 import TeamModule from '@/components/TeamModule'
 import BillingModule from '@/components/BillingModule'
 import WhatsAppConfig from '@/components/WhatsAppConfig'
@@ -73,6 +75,7 @@ export default function CRM(){
   const[saving,setSaving]=useState(false)
   const[msg,setMsg]=useState('')
   const[waChats,setWaChats]=useState<any[]>([])
+  const[showOnboarding,setShowOnboarding]=useState(false)
   const[selChat,setSelChat]=useState<any>(null)
   const[waMsgs,setWaMsgs]=useState<any[]>([])
   const endRef=useRef<HTMLDivElement>(null)
@@ -86,7 +89,7 @@ export default function CRM(){
       if(!data.user){window.location.href='/login';return}
       setUser(data.user)
       sb.from('workspaces').select('*').eq('slug','clientflow-demo').single()
-        .then(({data:w})=>{if(w){setWs(w);load(w.id)}else setLoading(false)})
+        .then(({data:w})=>{if(w){setWs(w);load(w.id);setShowOnboarding(true)}else setLoading(false)})
     })
   },[])
   useEffect(()=>{endRef.current?.scrollIntoView({behavior:'smooth'})},[waMsgs])
@@ -176,6 +179,7 @@ export default function CRM(){
         <FSel label="Contacto" value={nd.contact_id} onChange={(e:any)=>setNd(p=>({...p,contact_id:e.target.value}))} opts={[{v:'',l:'— Ninguno —'},...contacts.map((c:any)=>({v:c.id,l:c.first_name+' '+c.last_name}))]}/>
       </Modal>}
 
+      {showOnboarding&&ws&&user&&<OnboardingWizard wsId={ws.id} userId={user.id} onComplete={()=>setShowOnboarding(false)}/>}
       {/* SIDEBAR */}
       <aside style={{width:220,background:T.s1,borderRight:'1px solid '+T.border,display:'flex',flexDirection:'column',flexShrink:0,overflowY:'auto'}}>
         <div style={{padding:'18px 14px 16px',borderBottom:'1px solid '+T.border,display:'flex',alignItems:'center',gap:10}}>
@@ -369,7 +373,8 @@ export default function CRM(){
 
           {nav==='google'&&<Card style={{padding:36,textAlign:'center',maxWidth:500,margin:'0 auto'}}><div style={{fontSize:48,marginBottom:16}}>G</div><div style={{fontWeight:800,fontSize:20,marginBottom:8,color:'#4285F4'}}>Google Ads</div><div style={{color:T.muted,fontSize:14,marginBottom:24,lineHeight:1.6}}>El endpoint /api/google/sync está listo. Cuando consigas el Developer Token, la sincronización será automática.</div><button style={{border:'none',borderRadius:9,padding:'12px 28px',background:'#4285F4',color:'#fff',fontSize:14,fontWeight:600,cursor:'pointer'}}>Conectar Google Ads →</button></Card>}
 
-          {nav==='reportes'&&<div style={{display:'flex',flexDirection:'column',gap:16}}>
+          {nav==='reportes'&&ws&&<ReportsModule wsId={ws.id}/>}
+          {nav==='_old_reportes'&&<div style={{display:'flex',flexDirection:'column',gap:16}}>
             <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:14}}>{[{i:'💰',l:'Valor cartera',v:'€'+(stats.revenue||0).toLocaleString(),c:T.green},{i:'👥',l:'Contactos',v:stats.contacts,c:T.accent},{i:'🎯',l:'Leads',v:stats.leads,c:T.purple},{i:'📋',l:'Propuestas',v:stats.proposals,c:T.orange}].map((s,i)=><Card key={i} style={{padding:16}}><div style={{fontSize:18,marginBottom:6}}>{s.i}</div><div style={{fontWeight:800,fontSize:20,color:s.c}}>{s.v}</div><div style={{fontSize:11,color:T.muted,marginTop:2}}>{s.l}</div></Card>)}</div>
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
               <Card style={{padding:20}}><div style={{fontWeight:800,fontSize:14,marginBottom:16}}>Por origen · Supabase</div>{['meta_ads','google_ads','whatsapp','form','email','organic','referral'].map(src=>{const count=contacts.filter((c:any)=>c.source===src).length;if(!count)return null;const cols:any={meta_ads:'#1877F2',google_ads:'#4285F4',whatsapp:'#25D366',form:'#9B72FF',email:'#3D7EFF',organic:'#18CF7A',referral:'#FF7A35'};return<div key={src} style={{marginBottom:12}}><div style={{display:'flex',justifyContent:'space-between',fontSize:12,marginBottom:5}}><span style={{color:T.muted}}>{src.replace('_',' ')}</span><span style={{fontWeight:700}}>{count}</span></div><div style={{height:5,borderRadius:3,background:T.s3}}><div style={{height:'100%',width:Math.round(count/(contacts.length||1)*100)+'%',borderRadius:3,background:cols[src]||T.accent}}/></div></div>})}{!contacts.length&&<div style={{color:T.muted,fontSize:12}}>Sin datos aún.</div>}</Card>
