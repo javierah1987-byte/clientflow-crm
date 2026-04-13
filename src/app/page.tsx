@@ -369,9 +369,33 @@ export default function CRM(){
           {nav==='facturas'&&ws&&<InvoiceModule wsId={ws.id} contacts={contacts}/>}
           {nav==='propuestas'&&ws&&<ProposalModule wsId={ws.id} contacts={contacts}/>}
           {nav==='facturas'&&ws&&<InvoiceModule wsId={ws.id} contacts={contacts}/>}
-          {nav==='meta'&&<Card style={{padding:36,textAlign:'center',maxWidth:500,margin:'0 auto'}}><div style={{fontSize:48,marginBottom:16}}>f</div><div style={{fontWeight:800,fontSize:20,marginBottom:8,color:'#1877F2'}}>Meta Ads</div><div style={{color:T.muted,fontSize:14,marginBottom:24,lineHeight:1.6}}>Los webhooks ya están configurados. Conecta tu cuenta de Meta Business para recibir leads automáticamente en Supabase.</div><button style={{border:'none',borderRadius:9,padding:'12px 28px',background:'#1877F2',color:'#fff',fontSize:14,fontWeight:600,cursor:'pointer'}} onClick={()=>window.open('https://business.facebook.com/settings/system-users','_blank')}>Conectar Meta Business →</button></Card>}
+          {nav==='meta'&&<Card style={{padding:36,textAlign:'center',maxWidth:500,margin:'0 auto'}}><div style={{fontSize:48,marginBottom:16}}>f</div><div style={{fontWeight:800,fontSize:20,marginBottom:8,color:'#1877F2'}}>Meta Ads</div><div style={{color:T.muted,fontSize:14,marginBottom:24,lineHeight:1.6}}>Los webhooks ya están configurados. Conecta tu cuenta de Meta Business para recibir leads automáticamente en Supabase.</div><button style={{border:'none',borderRadius:9,padding:'12px 28px',background:'#1877F2',color:'#fff',fontSize:14,fontWeight:600,cursor:'pointer'}} onClick={()=>window.open('https://business.facebook.com/settings/system-users','_blank')} onClick={()=>window.open('https://business.facebook.com/settings/system-users','_blank')}>Abrir Meta Business Manager →</button>
+          <div style={{marginTop:16,background:'#1877F215',border:'1px solid #1877F230',borderRadius:10,padding:'14px 16px',textAlign:'left' as const}}>
+            <div style={{fontSize:11,fontWeight:700,color:'#1877F2',marginBottom:10}}>📋 Pasos de configuración:</div>
+            <div style={{display:'flex',flexDirection:'column',gap:7}}>
+              {[['1','Ve a Meta Business Manager','business.facebook.com → Configuración → Usuarios del sistema'],['2','Crea usuario del sistema Admin','Genera token con permisos: ads_read, leads_retrieval, pages_read_engagement'],['3','Añade en Vercel las variables','META_ACCESS_TOKEN, META_AD_ACCOUNT_ID, META_APP_SECRET, META_VERIFY_TOKEN'],['4','Configura el webhook en Meta for Developers','App → Webhooks → Página → leadgen → URL del webhook:'],['5','URL del webhook','https://clientflow-crm-phi.vercel.app/api/meta/webhook']].map(([n,t,d])=>(
+                <div key={n} style={{display:'flex',gap:8,fontSize:11}}>
+                  <span style={{color:'#1877F2',fontWeight:700,flexShrink:0}}>{n}.</span>
+                  <div><strong style={{color:'#D8E0F0'}}>{t}</strong><div style={{color:'#5E6A88',marginTop:1}}>{d}</div></div>
+                </div>
+              ))}
+            </div>
+            <button onClick={()=>window.open('https://vercel.com/javierah1987-3310s-projects/clientflow-crm/settings/environment-variables','_blank')} style={{marginTop:12,width:'100%',padding:'8px',border:'1px solid #1877F2',borderRadius:8,background:'transparent',color:'#1877F2',fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>Añadir variables en Vercel →</button>
+          </div></Card>}
 
-          {nav==='google'&&<Card style={{padding:36,textAlign:'center',maxWidth:500,margin:'0 auto'}}><div style={{fontSize:48,marginBottom:16}}>G</div><div style={{fontWeight:800,fontSize:20,marginBottom:8,color:'#4285F4'}}>Google Ads</div><div style={{color:T.muted,fontSize:14,marginBottom:24,lineHeight:1.6}}>El endpoint /api/google/sync está listo. Cuando consigas el Developer Token, la sincronización será automática.</div><button style={{border:'none',borderRadius:9,padding:'12px 28px',background:'#4285F4',color:'#fff',fontSize:14,fontWeight:600,cursor:'pointer'}} onClick={()=>window.open('https://ads.google.com/aw/apicenter','_blank')}>Conectar Google Ads →</button></Card>}
+          {nav==='google'&&<Card style={{padding:36,textAlign:'center',maxWidth:500,margin:'0 auto'}}><div style={{fontSize:48,marginBottom:16}}>G</div><div style={{fontWeight:800,fontSize:20,marginBottom:8,color:'#4285F4'}}>Google Ads</div><div style={{color:T.muted,fontSize:14,marginBottom:24,lineHeight:1.6}}>El endpoint /api/google/sync está listo. Cuando consigas el Developer Token, la sincronización será automática.</div><button style={{border:'none',borderRadius:9,padding:'12px 28px',background:'#4285F4',color:'#fff',fontSize:14,fontWeight:600,cursor:'pointer'}} onClick={()=>window.open('https://ads.google.com/aw/apicenter','_blank')} onClick={()=>window.open('https://ads.google.com/aw/apicenter','_blank')}>Abrir Google Ads API Center →</button>
+          <div style={{marginTop:16,background:'#4285F415',border:'1px solid #4285F430',borderRadius:10,padding:'14px 16px',textAlign:'left' as const}}>
+            <div style={{fontSize:11,fontWeight:700,color:'#4285F4',marginBottom:10}}>📋 Pasos de configuración:</div>
+            <div style={{display:'flex',flexDirection:'column',gap:7}}>
+              {[['1','Solicita Developer Token','Google Ads → Herramientas → API Center → Solicitar (puede tardar días)'],['2','Crea proyecto en Google Cloud','console.cloud.google.com → Habilita Google Ads API → Crea credenciales OAuth 2.0'],['3','Obtén Refresh Token','OAuth Playground → scope: googleapis.com/auth/adwords → Exchange tokens'],['4','Añade en Vercel','GOOGLE_ADS_DEVELOPER_TOKEN, GOOGLE_ADS_CUSTOMER_ID, GOOGLE_ADS_CLIENT_ID, GOOGLE_ADS_CLIENT_SECRET, GOOGLE_ADS_REFRESH_TOKEN'],['5','Sincroniza','Desde el CRM llama a POST /api/google/sync para importar leads y campañas']].map(([n,t,d])=>(
+                <div key={n} style={{display:'flex',gap:8,fontSize:11}}>
+                  <span style={{color:'#4285F4',fontWeight:700,flexShrink:0}}>{n}.</span>
+                  <div><strong style={{color:'#D8E0F0'}}>{t}</strong><div style={{color:'#5E6A88',marginTop:1}}>{d}</div></div>
+                </div>
+              ))}
+            </div>
+            <button onClick={()=>window.open('https://vercel.com/javierah1987-3310s-projects/clientflow-crm/settings/environment-variables','_blank')} style={{marginTop:12,width:'100%',padding:'8px',border:'1px solid #4285F4',borderRadius:8,background:'transparent',color:'#4285F4',fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>Añadir variables en Vercel →</button>
+          </div></Card>}
 
           {nav==='reportes'&&ws&&<ReportsModule wsId={ws.id}/>}
           {false&&<div style={{display:'flex',flexDirection:'column',gap:16}}>
